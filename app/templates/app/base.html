@@ -71,7 +71,7 @@
             id="profileDropdown" role="button" data-bs-toggle="dropdown"
             aria-expanded="false">Nilesh</a>
             <ul class="dropdown-menu" aria-labelledby="profileDropdown">
-            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
             <li><a class="dropdown-item" href="#">Orders</a></li>
             <li><a class="dropdown-item" href="#">Change Password</a></li>
             <li><a class="dropdown-item" href="#">Logoutk </a></li>
@@ -84,7 +84,7 @@
               <a href="#" class="nav-link text-white">Whishlist 4</a>
             </li>
             <li class="nav-item mx-2">
-              <a href="#" class="nav-link text-white">Login</a>
+              <a href="{% url 'login' %}" class="nav-link text-white">Login</a>
             </li>
             <li class="nav-item mx-2">
               <a href="{% url 'customerregistration' %}" class="nav-link text-white">Sign Up</a>

@@ -1,5 +1,5 @@
 from django.db.models import Count
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.views import View
 # from .forms import CustomerRegistrationForm
 # from .models import Customer
@@ -74,11 +74,28 @@ def address(request):
     add = Customer.objects.filter(user=request.user)
     return render(request, 'app/address.html',locals())
 
-def updateAddress(View):
-    def get(self,request,pk):
-        form = CustomerProfileForm()
+class updateAddress(View):
+    def get(self, request, pk):
+        add = Customer.objects.get(pk=pk)
+        form = CustomerProfileForm(instance=add)
+        # totalitem = 0
+        # wishitem = 0
+        # if request.user.is_authenticated:
+        #     totalitem = len(Cart.objects.filter(user=request.user))
+        #     wishitem = len(Wishlist.objects.filter(user=request.user))
         return render(request, 'app/updateAddress.html', locals())
-    def post(self,request,pk):
+    def post(self, request, pk):
         form = CustomerProfileForm(request.POST)
-        return render(request, 'app/updateAddress.html', locals())
-        
+        if form.is_valid():
+            add = Customer.objects.get(pk=pk)
+            add.name = form.cleaned_data['name']
+            add.locality = form.cleaned_data['locality']
+            add.city = form.cleaned_data['city']
+            add.mobile = form.cleaned_data['mobile']
+            add.zipcode = form.cleaned_data['zipcode']
+            add.state = form.cleaned_data['state']
+            add.save()
+            messages.success(request, "Congratulations! Profile update successfully")
+        else:
+            messages.warning(request, "Invalid input data")
+        return redirect('address')        

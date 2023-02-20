@@ -15,7 +15,7 @@ urlpatterns = [
     
     path('profile/', views.ProfileView.as_view(),name="profile"),
     path('address/', views.address,name="address"),
-    
+    path('updateAddress/<int:pk>', views.updateAddress.as_view(), name='updateAddress'),
     #authentication routes
     path('registration/', views.CustomerRegistrationView.as_view(),name="customerregistration"),
     path('accounts/login/', auth_view.LoginView.as_view(template_name='app/login.html', authentication_form=LoginForm), name="login"),

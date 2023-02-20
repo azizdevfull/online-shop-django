@@ -5,7 +5,7 @@ from django.views import View
 # from .models import Customer
 from .models import Customer
 from .forms import CustomerProfileForm
-from . models import Product
+from . models import Product, Cart
 from . forms import CustomerRegistrationForm
 from django.contrib import messages
 # Create your views here.
@@ -98,4 +98,56 @@ class updateAddress(View):
             messages.success(request, "Congratulations! Profile update successfully")
         else:
             messages.warning(request, "Invalid input data")
-        return redirect('address')        
+        return redirect('address')    
+    
+# @login_required
+def add_to_cart(request):
+    user = request.user
+    product_id = request.GET.get('prod_id')
+    if Cart.objects.filter(product=product_id).exists():
+        prod_id = request.GET['prod_id']
+        c = Cart.objects.get(Q(product=prod_id) & Q(user=request.user))
+        c.quantity += 1
+        c.save()
+        user = request.user
+        cart = Cart.objects.filter(user=user)
+        amount = 0
+        for p in cart:
+            value = p.quantity * p.product.discounted_price
+            amount = amount + value
+        totalamount = amount + 500
+        print(prod_id)
+        data = {
+            'quantity': c.quantity,
+            'amount': amount,
+            'totalamount': totalamount
+        }
+        return redirect('/cart')
+    else:
+        pass
+        product = Product.objects.get(id=product_id)
+        Cart(user=user, product=product).save()
+        return redirect('/cart')    
+    
+def add_to_cart(request):
+    user = request.user
+    product_id = request.GET.get('prod_id')
+    product = Product.objects.get(id=product_id)
+    Cart(user=user, product=product).save()
+    return redirect("/cart")
+
+def show_cart(request):
+    user = request.user
+    cart = Cart.objects.filter(user=user)
+    amount = 0
+    for p in cart:
+        value = p.quantity * p.product.discounted_price
+        amount = amount + value
+    totalamount = amount + 40
+    # totalitem = 0
+    # wishitem = 0
+    # if request.user.is_authenticated:
+    #     totalitem = len(Cart.objects.filter(user=request.user))
+    #     wishitem = len(Wishlist.objects.filter(user=request.user))
+
+    return render(request, 'app/addtocart.html', locals())

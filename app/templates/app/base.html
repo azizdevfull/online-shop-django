@@ -31,8 +31,9 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            {% if request.user.is_authenticated %}
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Home</a>
+              <a class="nav-link active" aria-current="page" href="/">Home</a>
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -73,8 +74,8 @@
             <ul class="dropdown-menu" aria-labelledby="profileDropdown">
             <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
             <li><a class="dropdown-item" href="#">Orders</a></li>
-            <li><a class="dropdown-item" href="#">Change Password</a></li>
-            <li><a class="dropdown-item" href="#">Logoutk </a></li>
+            <li><a class="dropdown-item" href="{% url 'passwordchange' %}">Change Password</a></li>
+            <li><a class="dropdown-item" href="{% url 'logout' %}">Logoutk </a></li>
             </ul>
             </li>
             <li class="nav-item mx-2">
@@ -83,12 +84,14 @@
             <li class="nav-item mx-2">
               <a href="#" class="nav-link text-white">Whishlist 4</a>
             </li>
+            {% else %}
             <li class="nav-item mx-2">
-              <a href="{% url 'login' %}" class="nav-link text-white">Login</a>
-            </li>
+            <a href="{% url 'login' %}" class="nav-link text-black">Login</a>
+          </li>
             <li class="nav-item mx-2">
-              <a href="{% url 'customerregistration' %}" class="nav-link text-white">Sign Up</a>
-            </li>
+            <a href="{% url 'customerregistration' %}" class="nav-link text-black">Registration</a>
+          </li>
+          {% endif %}
             </ul>
       
         </div>
@@ -123,9 +126,9 @@
       referrerpolicy="no-referrer"
     ></script>
 
-    <script script="{% static 'app/js/owl.carousel.min.js' %}"></script>
-    <script script="{% static 'app/js/myscript.js' %}"></script>
-    <script script="{% static 'app/js/all.min.js' %}"></script>
+    <script src="{% static 'app/js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'app/js/myscript.js' %}"></script>
+    <script src="{% static 'app/js/all.min.js' %}"></script>
 
   </body>
 </html>
